@@ -1,0 +1,18 @@
+#!/bin/sh
+
+myLayouts="us ku iq "
+currentLayout="$(sb-kbselect)"
+nextLayout="$(echo "$myLayouts" | awk -v currentLayout="$currentLayout" '{for(i=1;i<=NF;i++)if($i==currentLayout)print $(i+1)}')"
+
+# If the next layout is missing, start over from the first layout
+[ -z "$nextLayout" ] && nextLayout=$(echo "$myLayouts" | cut -d ' ' -f1)
+
+# Set the new layout, taking into account the variant for iq+ku_f
+if [ "$nextLayout" == "ku" ]; then
+    setxkbmap iq -variant ku_ara
+else
+    setxkbmap "$nextLayout"
+fi
+
+# Update the status bar (optional)
+pkill -RTMIN+30 "${STATUSBAR:-dwmblocks}"

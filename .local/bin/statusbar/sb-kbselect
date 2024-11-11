@@ -2,14 +2,23 @@
 # works on any init system
 # requirements: dmenu, xorg-setxkbmap
 kb="$(setxkbmap -query | grep -oP 'layout:\s*\K\w+')" || exit 1
-
+variant="$(setxkbmap -query | grep -oP 'variant:\s*\K\w+')"
+[ -n "$variant" ] && [ "${variant%_*}" = "ku" ] && kb="ku"
 case $BLOCK_BUTTON in
-	1) kb_choice="$(awk '/! layout/{flag=1; next} /! variant/{flag=0} flag {print $2, "- " $1}' /usr/share/X11/xkb/rules/base.lst | dmenu -l 15)"
+	1) kb_choice="$(awk '/! layout/{flag=1; next} /! variant/{flag=0} flag {print $2, "- " $1}
+	/^  ku_ara .*iq:/ {print $3, $4, "- iq+ku_ara"}' /usr/share/X11/xkb/rules/base.lst | dmenu -l 15)"
 	[ -z "$kb_choice" ] && exit 0
-	kb="$(echo "$kb_choice" | awk '{print $3}')"
-	setxkbmap "$kb"
+	if echo "$kb_choice" | grep -q '+'; then
+		kb="$(echo "$kb_choice" | awk -F'+' '{print $1}' | awk -F'- ' '{print $2}')"
+		variant="$(echo "$kb_choice" | awk -F'+' '{print $2}')"
+		setxkbmap "$kb" -variant "$variant"
+		[ "${variant%_*}" = "ku" ] && kb="ku"
+	else
+		kb="$(echo "$kb_choice" | awk '{print $3}')"
+		setxkbmap "$kb"
+	fi
 	pkill -RTMIN+30 "${STATUSBAR:-dwmblocks}";;
-	3) notify-send "⌨  Keyboard/language module" "$(printf "%s" "\- Current layout: $(setxkbmap -query | grep -oP 'layout:\s*\K\w+')")
+	3) notify-send "⌨ Keyboard/language module" "$(printf "%s" "\- Current layout: $(setxkbmap -query | grep -oP 'layout:\s*\K\w+|variant:\s*\K\w+' | paste -sd+ -)")
 - Left click to change keyboard.";;
 	6) setsid -f "$TERMINAL" -e "$EDITOR" "$0" ;;
 esac
