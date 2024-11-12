@@ -1,0 +1,1 @@
+# This new pipwire.conf.d/user-session.conf broke the audio on my t480s. I don't know if it is because of the new path or the contents of the file, but remove it and get back the older ./pipewire.conf from Luke's repo if the audio syste is not working.
