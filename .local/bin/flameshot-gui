@@ -1,0 +1,4 @@
+#!/bin/sh
+
+# Add a gui entry to dmenu for flameshot
+flameshot gui
