@@ -1,2 +1,2 @@
 #!/bin/sh
-whois -H "$1" | grep -i "expiry\|expiration:\|expires:"
+whois -H "$1" | grep -i "expiry\|expiration:\|expires:\|updated\|registered\|creation\|created\|modified\|^available"
