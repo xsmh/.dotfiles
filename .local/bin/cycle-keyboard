@@ -8,7 +8,7 @@ nextLayout="$(echo "$myLayouts" | awk -v currentLayout="$currentLayout" '{for(i=
 [ -z "$nextLayout" ] && nextLayout=$(echo "$myLayouts" | cut -d ' ' -f1)
 
 # Set the new layout, taking into account the variant for iq+ku_f
-if [ "$nextLayout" == "ku" ]; then
+if [ "$nextLayout" = "ku" ]; then
     setxkbmap iq -variant ku_ara
 else
     setxkbmap "$nextLayout"
