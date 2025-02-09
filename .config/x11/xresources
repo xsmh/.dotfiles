@@ -3,7 +3,7 @@
 
 /* !! Set a default font and font size as below: */
 /* *.font: monospace:size=10 */
-*.font: JetBrainsMono Nerd Font:style:medium:pixelsize=12
+*.font: JetBrainsMono Nerd Font:style=SemiBold:pixelsize=13:antialias=true:autohint=true,
 
 /* custom config taken from chadwm */
 Xft.antialias:	1
