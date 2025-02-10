@@ -13,6 +13,7 @@ if [ -f "${XDG_CONFIG_HOME:-$HOME/.config}/x11/xprofile" ]; then
 else
 	. "$HOME/.xprofile"
 fi
-# Activate dbus variables
-dbus-update-activation-environment --all
-dbus-launch ssh-agent dwm
+# Activate dbus variables (for artix)
+# dbus-update-activation-environment --all    # commenting this line out prevents brave from prompting to create a new keyring on stratup. Implications for other parts of the system/apps unknown.
+# dbus-launch ssh-agent dwm
+ssh-agent dwm
