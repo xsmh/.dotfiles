@@ -9,5 +9,18 @@ setxkbmap -option caps:super,altwin:menu_win
 killall xcape 2>/dev/null ; xcape -e 'Super_L=Escape'
 # Turn off caps lock if on since there is no longer a key for it.
 xset -q | grep -q "Caps Lock:\s*on" && xdotool key Caps_Lock
-# Remap Fn1 to middle click on Elecom Huge Trackball
-xinput set-button-map $(xinput list --id-only "pointer:Getech HUGE TrackBall") 1 2 3 4 5 6 7 8 9 2 11 12
+# Elecom Huge Trackball settings
+mouse_name="Getech HUGE TrackBall"
+check=$(xinput | grep "$mouse_name")
+if [[ ! -z "$check" ]]; then
+	elecom_id=$(xinput list --id-only "pointer:Getech HUGE TrackBall")
+	# Remaps buttons
+	xinput set-button-map $elecom_id 1 2 3 4 5 6 7 2 1 8 9 3
+	# Disable acceliration for the ball
+	xinput set-prop $elecom_id "libinput Accel Profile Enabled" 0, 1
+	# Allow scrolling by holding middle mouse button and using the ball to scroll
+	xinput set-prop $elecom_id "libinput Scroll Method Enabled" 0, 0, 1
+	# Allow the remmaped middle mouse to be used for middle mouse scroll
+	# Note must be the original button
+	xinput set-prop $elecom_id "libinput Button Scrolling Button" 8
+fi
