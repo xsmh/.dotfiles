@@ -12,7 +12,7 @@ xset -q | grep -q "Caps Lock:\s*on" && xdotool key Caps_Lock
 # Elecom Huge Trackball settings
 mouse_name="Getech HUGE TrackBall"
 check=$(xinput | grep "$mouse_name")
-if [[ ! -z "$check" ]]; then
+if [ -n "$check" ]; then
 	elecom_id=$(xinput list --id-only "pointer:Getech HUGE TrackBall")
 	# Remaps buttons
 	xinput set-button-map $elecom_id 1 2 3 4 5 6 7 2 1 8 9 3
